@@ -53,5 +53,7 @@ async updateUser(id:number,user:updateUserDto) {
     return this.userRepository.save(updateUser2);
 
 }
-
+find(email:string){
+    return this.userRepository.find({where:{email}});
+}
 }
