@@ -22,12 +22,11 @@ getUser() {
     return this.userRepository.find();
 }
 async getUserById(id:number) {
-    const userFound= await this.userRepository.findOne({where:{id}});
-
-    if(!userFound) {
+  
+    if(!id) {
         return new HttpException('User not found',HttpStatus.NOT_FOUND);
     }
-    return userFound;
+    return this.userRepository.findOne({where:{id}});;
 }
 
 async deleteUser(id:number) {
