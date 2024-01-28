@@ -11,7 +11,7 @@ import { CurrentUserInterceptor } from 'src/common/interceptor/current-user.inte
     
     provide:APP_INTERCEPTOR,
     useClass:CurrentUserInterceptor
-  
+
   
   }],
   controllers: [AuthController]
