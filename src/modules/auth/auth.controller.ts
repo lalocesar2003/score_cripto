@@ -10,7 +10,8 @@ import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { CurrentUserInterceptor } from 'src/common/interceptor/current-user.interceptor';
 // import { SerializeInterceptor,Serialize } from '../interceptors/serialize.interceptor';
 import { AuthGuard } from '../../common/guards/auth.guard';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('AUTH')
 @Controller('auth')
 
 
