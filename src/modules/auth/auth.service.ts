@@ -4,12 +4,15 @@ import { randomBytes,scrypt as _scrypt } from "crypto";
 import { promisify } from "util";
 import { Not } from "typeorm";
 import { createUserDto } from "../user/dto/create-user.dto";
+import axios from 'axios';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
 
 const scrypt = promisify(_scrypt);
 @Injectable()
 export class AuthService {
 
-    constructor(private usersService: UserService) { }
+    constructor(private httpService:HttpService,private usersService: UserService) { }
 
     async signup(user:createUserDto) {
 
@@ -50,4 +53,47 @@ export class AuthService {
     
 }
 
+
+async obtenerToken(username: string, password: string): Promise<string> {
+    const url = 'https://risk.credprotocol.com/api/token/auth/create/'; // Asegúrate de reemplazar con la URL correcta
+    const parametros = new URLSearchParams();
+    parametros.append('username', username);
+    parametros.append('password', password);
+
+    try {
+      const response = await axios.post(url, parametros.toString(), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      // Asumiendo que la API responde con { token: '...' }
+      return response.data.token;
+    } catch (error) {
+      // Manejar error adecuadamente
+      console.error('Error al obtener el token:', error);
+      throw new Error('No se pudo obtener el token');
+    }
+  }
+
+  async getScore(address: string, token: string): Promise<any> {
+    const url = `https://beta.credprotocol.com/api/score/address/${address}`;
+    const headersRequest = {
+      'Authorization': `Token ${token}`,
+    };
+    
+    try {
+      const response = await firstValueFrom(
+        this.httpService.get(url, { headers: headersRequest })
+      );
+      return response.data;
+    } catch (error) {
+      // Manejo de errores adecuado
+      throw error;
+    }
+  }
+  
 }
+
+
+

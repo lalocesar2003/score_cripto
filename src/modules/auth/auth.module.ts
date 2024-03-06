@@ -4,9 +4,10 @@ import { AuthController } from './auth.controller';
 import { UserModule } from '../user/user.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { CurrentUserInterceptor } from 'src/common/interceptor/current-user.interceptor';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports:[UserModule],
+  imports:[UserModule,HttpModule],
   providers: [AuthService,{
     
     provide:APP_INTERCEPTOR,
