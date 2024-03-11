@@ -8,12 +8,9 @@ import {
     UseGuards,
   } from '@nestjs/common';
   import { createUserDto } from '../user/dto/create-user.dto';
-  
   import { AuthService } from './auth.service';
   import { User } from '../user/user.entity';
-  
   import { CurrentUser } from '../../common/decorators/current-user.decorator';
-  
   import { AuthGuard } from '../../common/guards/auth.guard';
   import { ApiTags } from '@nestjs/swagger';
   @ApiTags('AUTH')
@@ -47,17 +44,5 @@ import {
       session.userId = user.id;
       return user;
     }
-    @Get('obtener-token')
-    async getToken(
-      @Query('username') username: string,
-      @Query('password') password: string,
-    ): Promise<string> {
-      return this.authService.obtenerToken(username, password);
-    }
-  
-    @Get('score')
-    async getScore(@Query('address') address: string): Promise<any> {
-      const token = '122009c65654ece48921033926486128aa053d44';
-      return this.authService.getScore(address, token);
-    }
+    
   }
